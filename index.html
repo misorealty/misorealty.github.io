@@ -6,6 +6,11 @@
 <title>미소공인중개사사무소 | 서울숲 성동구 안심 부동산</title>
 <meta name="description" content="서울 성동구 서울숲 인근 미소공인중개사사무소. 아파트 매매·전세·월세 및 상업용 부동산 전문. 대표 이주영.">
 
+<meta property="og:type" content="website">
+<meta property="og:title" content="미소공인중개사사무소 | 서울숲 안심 부동산">
+<meta property="og:description" content="성동구의 가치를 가장 잘 아는 전문 중개사. 매매/전월세/상업용 부동산 및 세무 컨설팅 전문.">
+<meta property="og:image" content="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"> <meta property="og:site_name" content="미소공인중개사사무소">
+
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -272,8 +277,11 @@ nav {
 .hero-left > *:nth-child(7) { animation-delay: 0.7s; }
 .hero-right { animation: fadeInRight 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both; }
 
-/* ── SECTIONS BASE ── */
-section { padding: 7rem 0; }
+/* ── SECTIONS BASE (🌟 네이티브 스크롤 여백 최적화) ── */
+section { 
+  padding: 7rem 0; 
+  scroll-margin-top: var(--bar-h); /* 메뉴바 높이만큼 앵커 이동 시 여백 자동 생성 */
+}
 .container { max-width: 1200px; margin: 0 auto; padding: 0 2.5rem; }
 .section-label {
   font-size: 0.75rem; font-weight: 600; letter-spacing: 0.2em;
@@ -622,6 +630,15 @@ section { padding: 7rem 0; }
 }
 .calc-summary-item.primary .v {
   color: #8a6228;
+}
+
+/* 🌟 증여일자 달력 입력칸 직관성 추가 (달력 아이콘 삽입) */
+#gf-date {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23B8965A' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'%3E%3C/rect%3E%3Cline x1='16' y1='2' x2='16' y2='6'%3E%3C/line%3E%3Cline x1='8' y1='2' x2='8' y2='6'%3E%3C/line%3E%3Cline x1='3' y1='10' x2='21' y2='10'%3E%3C/line%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  cursor: pointer;
+  padding-right: 40px; /* 아이콘을 위한 여백 */
 }
 
 /* Flatpickr 달력 맞춤 디자인 */
@@ -1449,6 +1466,7 @@ footer {
   const row = document.getElementById(rowId);
   if (row) row.querySelector('span:last-child').classList.add('hours-today');
 })();
+
 const io = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
@@ -1481,20 +1499,6 @@ document.addEventListener('click', e => {
   if (!ham.contains(e.target) && !mob.contains(e.target)) closeMenu();
 });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
-
-// 앵커 스크롤 위치 보정
-document.querySelectorAll('a[href^="#"]').forEach(a => {
-  a.addEventListener('click', e => {
-    const id = a.getAttribute('href').slice(1);
-    if (!id) return;
-    const el = document.getElementById(id);
-    if (!el) return;
-    e.preventDefault();
-    const navH = document.querySelector('nav').offsetHeight;
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    window.scrollTo({ top: el.offsetTop - navH, behavior: reducedMotion ? 'auto' : 'smooth' });
-  });
-});
 </script>
 
 <script>
@@ -1592,7 +1596,8 @@ function calcFormatNumberInput(input) {
     input.value = raw;
     return;
   }
-  // 입력 시 맨 앞자리에 0이 오는 경우 제거 (예: 015000 -> 15000)
+  
+  // 🌟 입력 편의성 개선: 맨 앞의 무의미한 0 제거 (예: 0150 -> 150)
   raw = raw.replace(/^0+(?=\d)/, '');
   
   const formatted = Number(raw).toLocaleString('ko-KR');
@@ -1912,12 +1917,12 @@ function initRealtyTaxCalculatorInputs() {
 document.addEventListener('DOMContentLoaded', () => {
   const gfDateInput = calcQuery('#gf-date');
   if (gfDateInput) {
-    // 🌟 Flatpickr 달력 초기화 (모든 환경에서 직관적인 날짜 선택 가능)
+    // 🌟 Flatpickr 달력 초기화 (모든 기기에서 연도 선택이 직관적인 고급 UI)
     flatpickr(gfDateInput, {
       locale: "ko", 
       dateFormat: "Y-m-d", 
       defaultDate: "today", 
-      disableMobile: true // 모바일 네이티브 달력 대신 예쁜 Flatpickr 달력 강제 사용
+      disableMobile: true 
     });
   }
 
